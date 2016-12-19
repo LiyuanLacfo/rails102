@@ -14,6 +14,7 @@ class GroupsController < ApplicationController
 		@group.user = current_user
 		if @group.save
 			redirect_to groups_path
+			current_user.join!(@group)
 		else
 			render :new
 		end
@@ -48,7 +49,7 @@ class GroupsController < ApplicationController
 
 	def join
 		@group = Group.find(params[:id])
-		if !current_user.is_memeber_of?(@group)
+		if !current_user.is_member_of?(@group)
 			current_user.join!(@group)
 			flash[:notice] = "加入本版成功"
 		else
